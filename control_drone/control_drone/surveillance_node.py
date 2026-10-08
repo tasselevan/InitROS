@@ -7,7 +7,7 @@ from std_srvs.srv import SetBool
 class SurveillanceNode(Node):
 
     def __init__(self):
-        super().__init__('surveillance_mode')
+        super().__init__('surveillance_node')
         self.active = False
 
         self.control_pub = self.create_publisher(Twist, '/control', 10)
@@ -20,8 +20,8 @@ class SurveillanceNode(Node):
 
         self.timer = self.create_timer(
             1.0,
-            self.publish_rotation
-        )
+            self.publish_rotation)
+        
     
     def surveillance_callback(self, request, response):
         self.active = request.data
@@ -37,12 +37,16 @@ class SurveillanceNode(Node):
 
     def publish_rotation(self):
 
+        self.get_logger().info(
+                f'Valeur active : {self.active}'
+            )
+
         if not self.active:
             return
         
         msg = Twist()
 
-        msg.angular.z = 100
+        msg.angular.z = 100.0
 
         self.control_pub.publish(msg)
 

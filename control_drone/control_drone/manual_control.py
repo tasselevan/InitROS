@@ -16,6 +16,7 @@ class ManualControl(Node):
         self.land_pub = self.create_publisher(Empty, '/land', 10)
         self.emergency_pub = self.create_publisher(Empty, '/emergency', 10)
         self.control_pub = self.create_publisher(Twist, '/secure_cmd', 10)
+        self.flip_pub = self.create_publisher(String, '/flip', 10)
 
         self.joy_sub = self.create_subscription(Joy, '/joy', self.joy_callback, 10)
         self.status_sub = self.create_subscription(TelloStatus, '/status', self.status_callback, 10)
@@ -35,6 +36,8 @@ class ManualControl(Node):
         AXIS_LEFT = 0
         AXIS_VERTICAL = 3
         AXIS_ROTATION = 2
+        AXIS_FLIP_DEVANT = 5
+        AXIS_FLIP_COTE = 4
 
         if msg.buttons[TAKEOFF_BUTTON] == 1 and self.distance_tof <= TOF_GROUND_THRESHOLD:
             self.takeoff_pub.publish(Empty())
@@ -45,6 +48,15 @@ class ManualControl(Node):
         
         if msg.buttons[EMERGENCY_BUTTON] == 1:
             self.emergency_pub.publish(Empty())
+        
+        if msg.axes[AXIS_FLIP_COTE] == 1:
+            self.flip_pub.publish(String(data='l'))
+        elif msg.axes[AXIS_FLIP_COTE] == -1:
+            self.flip_pub.publish(String(data='r'))
+        elif msg.axes[AXIS_FLIP_DEVANT] == 1:
+            self.flip_pub.publish(String(data='f'))
+        elif msg.axes[AXIS_FLIP_DEVANT] == -1:
+            self.flip_pub.publish(String(data='b'))
         
         control = Twist()
 

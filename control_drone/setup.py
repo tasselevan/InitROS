@@ -28,7 +28,8 @@ setup(
         'console_scripts': [
             'manual_control = control_drone.manual_control:main',
             'tello_behavior = control_drone.tello_behavior:main',
-            'surveillance = control_drone.surveillance_node:main'
+            'surveillance_node = control_drone.surveillance_node:main',
+            'spielberg = control_drone.spielberg_mode:main'
         ],
     },
 )
