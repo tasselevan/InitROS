@@ -106,6 +106,17 @@ Les topics /parameter_events et /rosout ne correspondent pas aux commandes du dr
 
 # Contrôle du drone
 
+## Commande utile
+
+Commande d'arrêt d'urgence :
+    - ros2 topic pub --once /emergency std_msgs/msg/Empty "{}"
+
+Commande de décollage :
+    - ros2 topic pub --once /takeoff std_msgs/msg/Empty "{}"
+
+Commande d'atterrissage :
+    - ros2 topic pub --once /land std_msgs/msg/Empty "{}"
+
 Décollage 9 : A / 3 
     - buttons [0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0]
 Arrêt d'urgence 8: B / 2 
@@ -114,7 +125,6 @@ Atterrissage 7 : X / 1
     - buttons [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
 Déplacements du drone joysticks 3 et 12 :
     - joystick 3:
-        - buttons [0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]
         - devant:
             - axes [0,1,0,0,0,0,0]
         - derrière:
@@ -124,7 +134,6 @@ Déplacements du drone joysticks 3 et 12 :
         - droite:
             - axes [-1,0,-1,0,0,0,0]
     - joystick 12:
-        - buttons [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]
         - devant:
             - axes [0,0,1,0,1,0,0]
         - derrière:
@@ -133,36 +142,10 @@ Déplacements du drone joysticks 3 et 12 :
             - axes [0,0,0,1,0,0,0]
         - droite:
             - axes [0,0,0,-1,0,0,0]
-Flip 4: 
-    - devant:
-        - axes [0,0,0,0,0,0,1]
-    - derrière:
-        - axes [0,0,0,0,0,0,-1]
-    - gauche:
-        - axes [0,0,0,0,0,1,0]
-    - droite:
-        - axes [0,0,0,0,0,-1,0]
-    - devant+droite:
-        - axes [0,0,0,0,0,-1,1]
+
+## Question 7
+
+Pour faire ce filtrage, on a rajouter un publisher et un subscriver intermediaire dans tello_behavior.py, son subscriver va recuperer le /secure_cmd et son publisher va envoyer a Tello_driver /control. L'utilité est de separer le nom du topic apres et avant filtre si on ne le fais pas on se retrouverais dans une boucle.
 
 
 
-
-
-
-
-
-1: [0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0]
-2: [0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0]
-3: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0]
-4: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-5: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-6: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-7: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-8: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-9: [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-10:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-11:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-12:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-13:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-14:[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
