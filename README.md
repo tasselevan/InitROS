@@ -147,5 +147,20 @@ Déplacements du drone joysticks 3 et 12 :
 
 Pour faire ce filtrage, on a rajouter un publisher et un subscriver intermediaire dans tello_behavior.py, son subscriver va recuperer le /secure_cmd et son publisher va envoyer a Tello_driver /control. L'utilité est de separer le nom du topic apres et avant filtre si on ne le fais pas on se retrouverais dans une boucle.
 
+# Commande pour lancer le projet
+
+ros2 run tello tello
+
+ros2 run joy joy_node
+
+ros2 run control_drone manual_control
+
+ros2 run control_drone tello_behavior
+
+ros2 run control_drone surveillance_node
+
+ros2 run control_drone spielberg
+
+ros2 service call /drone_mode pkg_msg/srv/DroneMode "{mode: 0}"
 
 

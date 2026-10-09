@@ -1,7 +1,9 @@
 import rclpy
 from rclpy.node import Node
+from rclpy.action import ActionServer
 
 from geometry_msgs.msg import Twist
+from pkg_msg.action import Spielberg
 
 import time
 
@@ -17,34 +19,82 @@ class SpielbergMode(Node):
             10
         )
 
-    def travelling(self):
+        self.spielberg_server = ActionServer(
+            self, 
+            Spielberg, 
+            'spielberg', 
+            self.execute_callback
+        )
+
+        self.get_logger().info('Spielberg node set !')
+
+
+    def travelling(self, goal_handle):
 
         self.get_logger().info('Début du travelling')
 
-        # Commande d'avance
         msg = Twist()
-        msg.linear.x = 100.0
+        msg.angular.z = 100.0
 
-        self.control_pub.publish(msg)
+        feedback_msg = Spielberg.Feedback()
 
-        # Maintenir la commande pendant 3 secondes
-        time.sleep(5.0)
+        for i in range(30):
+            self.control_pub.publish(msg)
+            feedback_msg.status = f'Progression : {(i + 1) * 100 // 60}%'
+            goal_handle.publish_feedback(feedback_msg)
+            time.sleep(0.1)
+        
+        msg = Twist()
+        msg.linear.y = 30.0
+
+        feedback_msg = Spielberg.Feedback()
+
+        for i in range(20):
+            self.control_pub.publish(msg)
+            feedback_msg.status = f'Progression : {(i + 1) * 100 // 60}%'
+            goal_handle.publish_feedback(feedback_msg)
+            time.sleep(0.1)
+
+        msg = Twist()
+        msg.angular.z = -100.0
+
+        for i in range(30):
+            self.control_pub.publish(msg)
+            feedback_msg.status = f'Progression : {(i + 31) * 100 // 60}%'
+            goal_handle.publish_feedback(feedback_msg)
+            time.sleep(0.1)
 
         # Arrêt
         msg = Twist()
         self.control_pub.publish(msg)
 
         self.get_logger().info('Fin du travelling')
+    
+    def execute_callback(self, goal_handle):
+        self.get_logger().info('Exécution du scénario Spielberg')
+
+        self.travelling(goal_handle)
+
+        msg = Twist()
+        self.control_pub.publish(msg)
+
+        goal_handle.succeed()
+
+        result = Spielberg.Result()
+        result.success = True
+        result.message = 'Travelling terminé'
+
+        return result
 
 
 def main(args=None):
     rclpy.init(args=args)
 
-    node = SpielbergMode()
+    spielberg_mode = SpielbergMode()
 
-    node.travelling()
+    rclpy.spin(spielberg_mode)
 
-    node.destroy_node()
+    spielberg_mode.destroy_node()
     rclpy.shutdown()
 
 
