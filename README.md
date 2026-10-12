@@ -6,13 +6,10 @@ L'objectif de ce TP est de mettre en place plusieurs scénarios de contrôle pou
 
 Les différents modes prévus sont :
 
-Mode manuel : contrôle du déplacement du drone à l'aide d'une manette.
-
-Mode follower : suivi des mouvements d'un QR code.
-
-Mode cinéma (« Spielberg ») : exécution d'un mouvement prédéfini à la lecture d'un QR code.
-
-Mode surveillance : rotation continue du drone sur lui-même.
+- Mode manuel : contrôle du déplacement du drone à l'aide d'une manette.
+- Mode cinéma (« Spielberg ») : exécution d'un mouvement prédéfini à la lecture d'un QR code.
+- Mode surveillance : rotation continue du drone sur lui-même.
+- Mode follower : suivi des mouvements d'un QR code.
 
 L'architecture repose sur plusieurs nœuds ROS 2 qui communiquent entre eux à l'aide de topics, de services et d'actions.
 
@@ -161,9 +158,9 @@ Par exemple, pour sélectionner le mode manuel depuis le terminal :
 Les modes disponibles sont identifiés par un numéro :
 
 - 0 : mode manuel ;
-- 1 : mode follower ;
+- 1 : mode surveillance;
 - 2 : mode Spielberg ;
-- 3 : mode surveillance.
+- 3 : mode follower.
 
 Depuis la manette, il suffit d'appuyer sur le bouton associé au mode souhaité. Le nœud manual_control envoie alors une requête au service /drone_mode, qui transmet le changement au nœud tello_behavior.
 
