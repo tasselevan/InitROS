@@ -166,6 +166,19 @@ Depuis la manette, il suffit d'appuyer sur le bouton associé au mode souhaité.
 
 Le mode follower et le déclenchement des comportements par lecture d'un QR code restent à implémenter.
 
+### 4.5. Commande utile
+
+Commande d'arrêt d'urgence :
+    - ros2 topic pub --once /emergency std_msgs/msg/Empty "{}"
+
+Commande de décollage :
+    - ros2 topic pub --once /takeoff std_msgs/msg/Empty "{}"
+
+Commande d'atterrissage :
+    - ros2 topic pub --once /land std_msgs/msg/Empty "{}"
+
+
+
 ## 5. Questions
 
 ## Question 1 :
@@ -266,34 +279,5 @@ L'intérêt est de pouvoir contrôler les mouvements du drone avant leur exécut
 
 Il est préférable d'effectuer ce changement en sortie de manual_control, au niveau des commandes issues de joy, afin de séparer les commandes de déplacement de l'utilisateur des commandes autorisées à atteindre le drone. Cela permet également de conserver le driver indépendant de la logique de filtrage et d'éviter une boucle de communication en distinguant les topics d'entrée et de sortie.
 
-
-# TP 
-
-## Commande utile
-
-Commande d'arrêt d'urgence :
-    - ros2 topic pub --once /emergency std_msgs/msg/Empty "{}"
-
-Commande de décollage :
-    - ros2 topic pub --once /takeoff std_msgs/msg/Empty "{}"
-
-Commande d'atterrissage :
-    - ros2 topic pub --once /land std_msgs/msg/Empty "{}"
-
-## Commande pour lancer le projet
-
-ros2 run tello tello
-
-ros2 run joy joy_node
-
-ros2 run control_drone manual_control
-
-ros2 run control_drone tello_behavior
-
-ros2 run control_drone surveillance_node
-
-ros2 run control_drone spielberg
-
-ros2 service call /drone_mode pkg_msg/srv/DroneMode "{mode: 0}"
 
 
