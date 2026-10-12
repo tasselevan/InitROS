@@ -44,7 +44,7 @@ Pour les comportements automatiques, tello_behavior communique avec les serveurs
 
 Le changement de mode est réalisé à l'aide du service /drone_mode, qui reçoit un numéro de mode et permet de demander au nœud tello_behavior le comportement souhaité.
 
-![alt text](archi_global.svg)
+![alt text](archi_global.png)
 
 ### 2.3. Modes de fonctionnement
 
