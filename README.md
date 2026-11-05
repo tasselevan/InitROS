@@ -279,5 +279,30 @@ L'intérêt est de pouvoir contrôler les mouvements du drone avant leur exécut
 
 Il est préférable d'effectuer ce changement en sortie de manual_control, au niveau des commandes issues de joy, afin de séparer les commandes de déplacement de l'utilisateur des commandes autorisées à atteindre le drone. Cela permet également de conserver le driver indépendant de la logique de filtrage et d'éviter une boucle de communication en distinguant les topics d'entrée et de sortie.
 
+## 6. Démonstration des modes en vidéo
+
+Les trois modes implémentés (manuel, Spielberg et surveillance) ont été **testés et validés en conditions réelles** avec le drone Tello EDU. Les vidéos ci-dessous montrent le comportement obtenu pour chacun de ces modes.
+
+### Mode manuel
+
+Contrôle complet du drone à la manette : décollage, déplacements (translation et rotation), changement de mode en cours de vol puis atterrissage. Les commandes passent par le filtrage de `tello_behavior` avant d'atteindre le drone.
+
+<video controls src="control_manuel.mp4" title="Mode manuel"></video>
+
+### Mode cinéma (Spielberg)
+
+Exécution du mouvement prédéfini déclenché par l'appui sur le bouton associé : le drone suit la séquence programmée (déplacements et changement d'orientation), puis le comportement se termine et le drone redevient pilotable en manuel.
+
+<video controls src="spielberg.mp4" title="Mode cinéma"></video>
+
+### Mode surveillance
+
+Passage en mode surveillance (via `/drone_mode` ou la manette) : le drone monte à une altitude de sécurité puis tourne continuellement sur lui-même afin de surveiller son environnement, jusqu'au changement de mode ou à l'atterrissage.
+
+<video controls src="surveillance.mp4" title="Mode surveillance"></video>
+
+Ces essais confirment le bon fonctionnement de l'architecture : le filtrage des commandes, la coordination des noeuds via `/drone_mode` et les serveurs de comportement fonctionnent comme prévu.
+
+
 
 
